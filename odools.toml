@@ -1,0 +1,3 @@
+[[config]]
+name = "odoo16"
+odoo_path = "e:/Documents/PythonProjects/odoo16"
