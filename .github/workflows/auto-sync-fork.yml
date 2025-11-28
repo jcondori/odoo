@@ -21,6 +21,10 @@ jobs:
         run: git remote add upstream https://github.com/odoo/odoo.git || true
       - name: Fetch only upstream/16.0
         run: git fetch upstream 16.0
+      - name: Setup git user
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
       - name: Merge upstream/16.0 into fork 16.0
         run: git merge upstream/16.0 --no-edit
       - name: Push changes
