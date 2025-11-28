@@ -2,7 +2,7 @@ name: Auto Sync Fork
 
 on:
   schedule:
-    - cron: "* * * * *" # Cada minuto (UTC)
+    - cron: "0 5 * * *" # Todos los días a 00:00 -05 (Perú)
   workflow_dispatch:
 jobs:
   docker:
@@ -12,14 +12,15 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
+          ref: '16.0'
       # Runs a single command using the runners shell
       - name: Add upstream remote
         run: git remote add upstream https://github.com/odoo/odoo.git || true
-      - name: Fetch upstream
-        run: git fetch upstream
+      - name: Fetch only upstream/16.0
+        run: git fetch upstream 16.0
       - name: Merge upstream/16.0 into fork 16.0
         run: git merge upstream/16.0 --no-edit
       - name: Push changes
