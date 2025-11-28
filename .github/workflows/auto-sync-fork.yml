@@ -3,6 +3,7 @@ name: Auto Sync Fork
 on:
   schedule:
     - cron: "* * * * *" # Cada minuto (UTC)
+  workflow_dispatch:
 jobs:
   docker:
     runs-on: ubuntu-latest
@@ -15,6 +16,8 @@ jobs:
         with:
           fetch-depth: 0
       # Runs a single command using the runners shell
+      - name: Add upstream remote
+        run: git remote add upstream https://github.com/odoo/odoo.git || true
       - name: Fetch upstream
         run: git fetch upstream
       - name: Merge upstream/16.0 into fork 16.0
