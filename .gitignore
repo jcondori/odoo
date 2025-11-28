@@ -49,3 +49,7 @@ package.json
 /man/
 /share/
 /src/
+/venv/
+/enterprise-16.0/
+/design-themes-16.0/
+/custom-addons/
