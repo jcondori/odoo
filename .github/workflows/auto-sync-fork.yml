@@ -11,7 +11,7 @@ jobs:
       contents: write
     strategy:
       matrix:
-        odoo_branch: [16.0, 18.0]
+        odoo_branch: ['16.0', '18.0']
 
     steps:
       - name: Checkout
