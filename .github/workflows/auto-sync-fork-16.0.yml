@@ -1,4 +1,4 @@
-name: Auto Sync Fork
+name: Auto Sync Fork 16.0
 
 on:
   schedule:
