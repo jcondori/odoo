@@ -1,55 +1,36 @@
-name: Auto Sync Fork 16.0
+name: Auto Sync Fork
 
 on:
   schedule:
     - cron: "0 5 * * *" # Todos los días a 00:00 -05 (Perú)
   workflow_dispatch:
 jobs:
-  run-16:
+  run-multi:
     runs-on: ubuntu-latest
     permissions:
-      contents: write  # Otorga permisos de escritura al token
+      contents: write
+    strategy:
+      matrix:
+        odoo_branch: [16.0, 18.0]
+
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          ref: '16.0'
-      # Runs a single command using the runners shell
+          ref: '${{matrix.odoo_branch}}'
+
       - name: Add upstream remote
         run: git remote add upstream https://github.com/odoo/odoo.git || true
-      - name: Fetch only upstream/16.0
-        run: git fetch upstream 16.0
+
+      - name: Fetch only upstream
+        run: git fetch upstream ${{matrix.odoo_branch}}:upstream/${{matrix.odoo_branch}}
+
       - name: Setup git user
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-      - name: Merge upstream/16.0 into fork 16.0
-        run: git merge upstream/16.0 --no-edit
+        run: git config --global user.name "github-actions[bot]" && git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Merge upstream into fork
+        run: git merge upstream/${{matrix.odoo_branch}} --no-edit
+
       - name: Push changes
-        run: git push origin 16.0
-  run-18:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write  # Otorga permisos de escritura al token
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: Checkout
-        uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-          ref: '18.0'
-      # Runs a single command using the runners shell
-      - name: Add upstream remote
-        run: git remote add upstream https://github.com/odoo/odoo.git || true
-      - name: Fetch only upstream/18.0
-        run: git fetch upstream 18.0
-      - name: Setup git user
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-      - name: Merge upstream/18.0 into fork 18.0
-        run: git merge upstream/18.0 --no-edit
-      - name: Push changes
-        run: git push origin 18.0
+        run: git push origin ${{matrix.odoo_branch}}
