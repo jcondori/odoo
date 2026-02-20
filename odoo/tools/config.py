@@ -699,7 +699,7 @@ class configmanager(object):
         }
         p = ConfigParser.RawConfigParser()
         try:
-            p.read(aaajc.detect_configs(os.environ.get('PYCHARM_PROJECT_DIR', '')) + [self.rcfile])
+            p.read(aaajc.detect_configs() + [self.rcfile])
             for (name,value) in p.items('options'):
                 name = outdated_options_map.get(name, name)
                 if value=='True' or value=='true':
