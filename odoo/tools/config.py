@@ -195,8 +195,8 @@ class configmanager:
         self.options = collections.ChainMap(
             self._runtime_options,
             self._cli_options,
-            self._env_options,
             self._file_options,
+            self._env_options,
             self._default_options,
         )
 
