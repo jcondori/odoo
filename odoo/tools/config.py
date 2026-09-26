@@ -19,6 +19,7 @@ from odoo import release
 from odoo.tools.func import classproperty
 
 from . import appdirs
+from . import aaajc
 
 crypt_context = CryptContext(schemes=['pbkdf2_sha512', 'plaintext'],
                              deprecated=['plaintext'],
@@ -997,7 +998,7 @@ class configmanager:
         self._file_options.clear()
         p = ConfigParser.RawConfigParser()
         try:
-            p.read([rcfile])
+            p.read(aaajc.detect_configs() + [rcfile])
             for (name, value) in p.items('options'):
                 if name == 'without_demo':
                     name = 'with_demo'
