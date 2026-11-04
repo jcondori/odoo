@@ -5775,11 +5775,10 @@ class AccountMove(models.Model):
                 row['amount'] = row['part_amount']
                 row['currency'] = currency_ids_mapping[row['part_company_currency_id']]
 
-        return [
-            row
-            for row in rows
-            if row['is_exchange'] or not row['is_caba']
-        ]
+        return sorted(
+            (row for row in rows if row['is_exchange'] or not row['is_caba']),
+            key=lambda row: (row['aml'].date, row['aml'].id),
+        )
 
     def _get_reconciled_invoices_partials(self):
         ''' Helper to retrieve the details about reconciled invoices.
@@ -6206,7 +6205,7 @@ class AccountMove(models.Model):
                     raise RedirectWarning(
                         _(
                             "The company bank account (%(account_number)s) linked to this invoice is not trusted. "
-                            "Go to the Bank Settings, double-check that it is yours or correct the number, and click on Send Money to trust it.",
+                            "Go to the Bank Settings, double-check that it is yours or correct the number, and click on Trust Bank Account to trust it.",
                             account_number=invoice.partner_bank_id.display_name,
                         ),
                         invoice.partner_bank_id._get_records_action(),
